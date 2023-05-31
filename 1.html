@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no">
+        <title>QR码识别</title>
+        <script src="jquery-3.4.1.min.js"></script>
+        <script src="jsQR.js"></script>
+    </head>
+    <body>
+        <div>
+        </div>
+        <div>
+            <canvas id="canvas"></canvas>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        var video = document.createElement("video");
+        var canvasElement = document.getElementById("canvas");
+        var canvas = canvasElement.getContext("2d");
+ 
+		// 描边
+        function drawLine(begin, end, color) {
+            canvas.beginPath();
+            canvas.moveTo(begin.x, begin.y);
+            canvas.lineTo(end.x, end.y);
+            canvas.lineWidth = 4;
+            canvas.strokeStyle = color;
+            canvas.stroke();
+        }
+ 
+        // 尝试打开手机上安装后置摄像头
+        navigator.mediaDevices.getUserMedia({
+			video: { facingMode: "environment" } 
+		}).then(function (stream) {
+            video.srcObject = stream;
+			// 阻止IOS视频全屏
+            video.setAttribute("playsinline", true); 
+            video.play();
+            requestAnimationFrame(tick);
+        });
+ 
+        function tick() {
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                canvasElement.hidden = false;
+ 
+                canvasElement.height = video.videoHeight;
+                canvasElement.width = video.videoWidth;
+                canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+				
+				// QR码解析
+                var code = jsQR(
+					imageData.data,   // 图像数据
+					imageData.width,  // 宽度
+					imageData.height, // 高度
+					{
+                    inversionAttempts: "dontInvert",
+					}
+				);
+				
+                if (code) {
+                    drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
+                    drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
+                    drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
+                    drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
+					alert(code.data);
+                }
+            }
+            requestAnimationFrame(tick);
+        }
+    </script>
+</html>
