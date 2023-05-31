@@ -67,9 +67,12 @@
                     drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
                     drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
                     drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-		    const urlObj = new URL(window.location.href);
+                    console.log(document.referrer);
+                    const urlObj = new URL(window.location.href);
                     console.log(document.referrer+urlObj.pathname.substring(1,urlObj.pathname.length));
-					alert(code.data);
+                    var url = document.referrer+urlObj.pathname.substring(1,urlObj.pathname.length);
+                    window.location.href = document.referrer+"?result=" + code.data;
+                    window.close();
                 }
             }
             requestAnimationFrame(tick);
