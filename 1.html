@@ -70,6 +70,8 @@
                     console.log(document.readyState);
                     console.log(document);
                     console.log(document.referrer);
+		    const url = window.location.href;
+		    console.log(url); // "http://example.com/path/to/page?param1=value1&param2=value2"
 		    const urlObj = new URL(window.location.href);
 		    console.log(urlObj.pathname);
 		    console.log(urlObj.searchParams.get("param1"));
