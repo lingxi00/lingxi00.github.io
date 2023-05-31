@@ -70,6 +70,9 @@
                     console.log(document.readyState);
                     console.log(document);
                     console.log(document.referrer);
+			const urlObj = new URL(window.location.href);
+			console.log(urlObj.pathname);
+			console.log(urlObj.searchParams.get("param1"));
 					alert(code.data);
                 }
             }
