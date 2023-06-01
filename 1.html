@@ -73,7 +73,23 @@
                     var url = document.referrer+urlObj.pathname.substring(1,urlObj.pathname.length);
                     var urlParams = new URLSearchParams(window.location.search);
                     var fromUrl = urlParams.get('from');
-                    window.location.href = fromUrl+"?result=" + code.data;
+                var url = fromUrl;
+                if (url.indexOf('?') > -1) {
+                    // URL中已经存在查询参数
+                    var searchParams = new URLSearchParams(url.split('?')[1]);
+                    if (searchParams.has('result')) {
+                        // 替换原有的result参数值
+                        searchParams.set('result', code.data);
+                        url = url.split('?')[0] + '?' + searchParams.toString();
+                    } else {
+                        // 添加新的result参数
+                        url += '&result=' + code.data;
+                    }
+                } else {
+                    // URL中不存在查询参数
+                    url += '?result=' + code.data;
+                }
+                window.location.href = url;
                     window.close();
                 }
             }
