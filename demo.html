@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // $(document).ready(function() {
+        //     $("#myLink").click(function(){
+        //     //event.preventDefault(); // 阻止a标签默认的跳转行为
+        //     location = "https://lingxi00.github.io/1.html?from=" + window.location.href; // 将当前页面的URL地址赋值给a标签的href属性
+        // })
+        // })
+        function openSecondWebsite(){
+            location = "https://lingxi00.github.io/1.html?from=" + window.location.href; // 将当前页面的URL地址赋值给a标签的href属性
+        }
+    </script>
+
+</head>
+
+<body>
+    <!-- <button onclick="openSecondWebsite()">扫码</button> -->
+<h1>123</h1>
+    <a id="myLink" href="#" onclick="openSecondWebsite()" target="_self">扫码</a>
+    <div id="result">
+    </div>
+    <p class="result"></p>
+
+    <script>
+        // function openSecondWebsite() {
+        //     window.open("https://lingxi00.github.io/1.html", "smallwindow", "width=480, height=400");
+        //     // getScanResult();
+        // }
+        // function openSecondWebsite() {
+        //     var features = "width=500,height=400,left=100,top=100";
+        //     window.open("http://www.example.com", "_blank", features, false);
+        // }
+        function getParameterByName(name) {
+            var url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            var results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        var result = getParameterByName('result');
+        if (result != "") {
+            $('#result').text(result)
+            $('.result').text(result)
+        };
+    </script>
+</body>
+
+</html>
